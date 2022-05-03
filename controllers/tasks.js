@@ -15,8 +15,10 @@ const deleteTask = (req,res)=> {
     res.send("deleting task")
 }
 
-const createNewTask = (req,res)=> {
-    res.send("creating new task")
+const createNewTask = async (req,res)=> {
+    const task = await Task.create(req.body)
+    res.status(201).send({task})
+    
 }
 
 module.exports = {
