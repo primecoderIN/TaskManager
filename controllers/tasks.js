@@ -1,3 +1,5 @@
+
+const req = require("express/lib/request")
 const Task = require("../models/task")
 const getAllTasks = async (req,res)=> {
 
@@ -10,21 +12,50 @@ const getAllTasks = async (req,res)=> {
 }
 
 const getTask = async (req,res)=> {
-    // const {id} = req.params; //Commented it because why to create extra variables
+    const {id: TaskID} = req.params; 
     try{
-       const task = await Task.findOne({id: req.params.id})
+       const task = await Task.findOne({_id: TaskID})
+
+       console.log(task)
+      //If there is no task with provided id
+      if(!task){
+          return res.status(404).send({message: `No task exists with id ${TaskID}`})
+      }
        res.status(200).send({task})
+    }catch(err){
+        res.status(500).send({message: "Something went wrong, please try again later"})
+    } 
+}
+
+const updateTask = async (req,res)=>  {
+    const {id: TaskID} = req.params;
+    const {name,completed} = req.body;
+    try{
+      const task=  await Task.findOneAndUpdate({_id:TaskID},req.body, {
+          new: true, // I wanna get new value as return 
+          runValidators: true  // I again want to validate what user enters so
+      })  //It returns us the old task so we need to pass an option to get new
+      if(!task){
+        return res.status(404).send({message: `No task exists with id ${TaskID}`})
+      }
+      res.status(200).json(task)
     }catch(err){
         res.status(500).send({message: "Something went wrong, please try again later"})
     }
 }
 
-const updateTask = (req,res)=> {
-    res.send("updating task")
-}
-
-const deleteTask = (req,res)=> {
-    res.send("deleting task")
+const deleteTask = async (req,res)=> {
+  const {id: TaskID} = req.params;
+  try{
+    const response = await Task.findOneAndDelete({_id: TaskID})  //Do not use delete one method. We have to first check then delete
+    if(!response) {
+        return res.status(400).send({message: `No task exists with id ${TaskID}`})
+    }
+    // res.status(200).send() we can do this also
+    res.status(200).send({success: true, message: "Task deleted"})
+  }catch(err){
+    res.status(500).send({message: "Something went wrong, please try again later"})
+  }
 }
 
 const createNewTask = async (req,res)=> {
