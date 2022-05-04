@@ -1,10 +1,22 @@
 const Task = require("../models/task")
-const getAllTasks = (req,res)=> {
-   res.send("getting all task")
+const getAllTasks = async (req,res)=> {
+
+    try{
+    const tasks =  await  Task.find({}) //If you leave the object empty it will give you all the data
+        res.status(200).send({tasks})
+    }catch(err){
+        res.status(500).send({message: "Something went wrong, please try again later"})
+    }
 }
 
-const getTask = (req,res)=> {
-    res.send("getting one task")
+const getTask = async (req,res)=> {
+    // const {id} = req.params; //Commented it because why to create extra variables
+    try{
+       const task = await Task.findOne({id: req.params.id})
+       res.status(200).send({task})
+    }catch(err){
+        res.status(500).send({message: "Something went wrong, please try again later"})
+    }
 }
 
 const updateTask = (req,res)=> {
@@ -16,8 +28,14 @@ const deleteTask = (req,res)=> {
 }
 
 const createNewTask = async (req,res)=> {
-    const task = await Task.create(req.body)
-    res.status(201).send({task})
+
+    try{
+        const task = await Task.create(req.body)
+        res.status(201).send({task})
+    }catch(err){
+        res.status(500).send({message: "Something went wrong, please try again later"})
+    }
+   
     
 }
 
