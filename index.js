@@ -14,7 +14,7 @@ app.use(notFound)
 app.use(errorHandler)
 
 //Server setup
-const port = 4000;
+const port = process.env.PORT;
 const hostname = "localhost"
 //We are first connecting to DB then starting server using promisses and async await
 const URI = process.env.MONGO_URI;
