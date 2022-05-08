@@ -9,6 +9,7 @@ const taskSchema = new mongoose.Schema({
      },
      completed: {
           type: Boolean,
+          //In case of put method remove default value then put method will work
           default: false //Set default value to false
 
      }

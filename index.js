@@ -1,14 +1,18 @@
 const express = require("express");
 const app = express()
 const tasks = require("./routes/tasks")
-const connectDB = require("./db/connect")
+const connectDB = require("./db/connect");
+const notFound = require("./middleware/not-found");
 require("dotenv").config() //This is to initiate dotenv
 
 app.use(express.json())  //Middleware to read the body
 
 app.use("/api/v1/tasks",tasks)
 
-//Server setu[]
+app.use(notFound)
+
+
+//Server setup
 const port = 4000;
 const hostname = "localhost"
 //We are first connecting to DB then starting server using promisses and async await

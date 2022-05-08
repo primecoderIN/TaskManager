@@ -1,5 +1,4 @@
 
-const req = require("express/lib/request")
 const Task = require("../models/task")
 const getAllTasks = async (req,res)=> {
 
@@ -29,10 +28,9 @@ const getTask = async (req,res)=> {
 
 const updateTask = async (req,res)=>  {
     const {id: TaskID} = req.params;
-    const {name,completed} = req.body;
     try{
       const task=  await Task.findOneAndUpdate({_id:TaskID},req.body, {
-          new: true, // I wanna get new value as return 
+          new: true, // I wanna get updated data in response so
           runValidators: true  // I again want to validate what user enters so
       })  //It returns us the old task so we need to pass an option to get new
       if(!task){
@@ -70,10 +68,24 @@ const createNewTask = async (req,res)=> {
     
 }
 
+const editTask = async (req,res)=> {
+    const {id: TaskID} = req.params;
+    try{
+       const response = await Task.findOneAndUpdate({_id: TaskID}, req.body, {
+           overwrite: true,
+           new: true,
+           runValidators: true
+       })
+    }catch(err) {
+
+    }
+}
+
 module.exports = {
     getAllTasks,
     createNewTask,
     deleteTask,
     updateTask,
-    getTask
+    getTask,
+    editTask
 }
