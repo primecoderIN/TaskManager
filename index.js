@@ -3,6 +3,7 @@ const app = express()
 const tasks = require("./routes/tasks")
 const connectDB = require("./db/connect");
 const notFound = require("./middleware/not-found");
+const errorHandler = require("./middleware/errorHandler")
 require("dotenv").config() //This is to initiate dotenv
 
 app.use(express.json())  //Middleware to read the body
@@ -10,7 +11,7 @@ app.use(express.json())  //Middleware to read the body
 app.use("/api/v1/tasks",tasks)
 
 app.use(notFound)
-
+app.use(errorHandler)
 
 //Server setup
 const port = 4000;
