@@ -24,6 +24,7 @@ const startServer = async ()=> {
         console.log(`Server is listening at ${port}`)
         })
     } catch (err) {
+        console.log("Unable to start server bro")
          console.log(err)
     }
 } 
