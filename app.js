@@ -17,8 +17,6 @@ app.use(errorHandler)
 const port = process.env.PORT || 4000;
 //We are first connecting to DB then starting server using promisses and async await
 const URI = process.env.MONGO_URI;
-
-console.log("My URI", URI)
 const startServer = async ()=> {
     try{
        await connectDB(URI)
