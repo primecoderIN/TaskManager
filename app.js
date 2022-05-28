@@ -16,8 +16,7 @@ app.use(errorHandler)
 //Server setup
 const port = process.env.PORT || 4000;
 //We are first connecting to DB then starting server using promisses and async await
-const URI =
-"mongodb+srv://primecoderIN:primecoder2022@cluster0.lvwf0.mongodb.net/TaskManager?retryWrites=true&w=majority"
+const URI = process.env.MONGO_URI;
 const startServer = async ()=> {
     try{
        await connectDB(URI)
